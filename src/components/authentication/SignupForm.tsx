@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import React from "react";
+import React, { useId, useState } from "react";
 import {
   Form,
   FormItem,
@@ -15,6 +15,10 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { signUP } from "@/app/actions/server-actions";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[!@#$%^&*()-_=+{};:,<.>]).{8,}$/;
@@ -46,11 +50,33 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-function onSubmit(values: z.infer<typeof formSchema>) {
-  console.log(values);
-}
-
 const LoginForm = ({ className }: { className?: string }) => {
+  const toastId = useId();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    toast.loading("Signing you Up!", { id: toastId });
+
+    const formData = new FormData();
+    formData.append("fullName", values.fullName);
+    formData.append("password", values.password);
+    formData.append("email", values.email);
+    const { success, error } = await signUP(formData);
+    if (!success) {
+      setLoading(false);
+      toast.error(error, { id: toastId });
+    } else {
+      setLoading(false);
+      toast.success(
+        "You have successfully signed Up! Please confirm your email address",
+        {
+          id: toastId,
+        }
+      );
+      redirect("/login");
+    }
+  }
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -85,7 +111,11 @@ const LoginForm = ({ className }: { className?: string }) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="name@example.com" {...field} />
+                  <Input
+                    placeholder="name@example.com"
+                    type="email"
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -99,7 +129,11 @@ const LoginForm = ({ className }: { className?: string }) => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your password" {...field} />
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -113,15 +147,24 @@ const LoginForm = ({ className }: { className?: string }) => {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Confirm your password" {...field} />
+                  <Input
+                    placeholder="Confirm your password"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full cursor-pointer">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full cursor-pointer"
+          >
             Sign In
+            {loading && <Loader2 className="animate-spin  text-gray-200" />}
           </Button>
         </form>
       </Form>

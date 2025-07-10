@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "../ui/button";
+
 import { signOut } from "@/app/actions/server-actions";
 
 const LogoutBtn = () => {
@@ -9,9 +9,9 @@ const LogoutBtn = () => {
     await signOut();
   }
   return (
-    <Button variant="destructive" onClick={handleSignOut}>
-      Logout
-    </Button>
+    <div className="text-red-500 h-full  p-0 m-0" onClick={handleSignOut}>
+      Log Out
+    </div>
   );
 };
 

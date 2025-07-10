@@ -1,5 +1,5 @@
 {
-  "name": "pictoria_ai_starter_code_repo",
+  "name": "picme",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -27,6 +27,8 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.50.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
