@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Card, CardContent } from "../ui/card";
 import {
@@ -8,32 +9,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-
-const images = [
-  {
-    src: "/hero-images/Charismatic Young Man with a Warm Smile and Stylish Tousled Hair.jpeg",
-    alt: "some alt text",
-  },
-  {
-    src: "/hero-images/Confident Businesswoman on Turquoise Backdrop.jpeg",
-    alt: "some alt text",
-  },
-  {
-    src: "/hero-images/Confident Woman in Red Outfit.jpeg",
-    alt: "some alt text",
-  },
-  {
-    src: "/hero-images/Confident Woman in Urban Setting.jpeg",
-    alt: "some alt text",
-  },
-  {
-    src: "/hero-images/Confident Woman in Urban Setting.jpeg",
-    alt: "some alt text",
-  },
-];
+import useGenerateStore from "@/store/useGenerateStore";
 
 const GeneratedImages = () => {
-  if (images.length === 0) {
+  const images = useGenerateStore((state) => state.images);
+  console.log(images);
+  if (!images || images.length === 0) {
     return (
       <Card className="aspect-square w-full max-w-xl  bg-muted">
         <CardContent className="flex items-center justify-center aspect-square p-6">
@@ -42,6 +23,7 @@ const GeneratedImages = () => {
       </Card>
     );
   }
+
   return (
     <Carousel className="w-full max-w-xl">
       <CarouselContent>
@@ -50,8 +32,8 @@ const GeneratedImages = () => {
             <div className="flex relative items-center justify-center rounded-lg overflow-hidden aspect-square">
               <Image
                 fill
-                src={img.src}
-                alt={img.alt}
+                src={img.url}
+                alt={"AI generated Images"}
                 className="w-full h-full object-cover"
               />
             </div>

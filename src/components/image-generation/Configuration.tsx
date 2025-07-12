@@ -29,8 +29,10 @@ import { Input } from "../ui/input";
 import { Slider } from "../ui/slider";
 import { Textarea } from "../ui/textarea";
 import { Info } from "lucide-react";
+import useGenerateStore from "@/store/useGenerateStore";
+import { useEffect } from "react";
 
-const formSchema = z.object({
+export const imageGenerationSchema = z.object({
   model: z.string({
     required_error: "Model is required!",
   }),
@@ -59,8 +61,8 @@ const formSchema = z.object({
 });
 
 const Configuration = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof imageGenerationSchema>>({
+    resolver: zodResolver(imageGenerationSchema),
     defaultValues: {
       model: "",
       prompt: "",
@@ -73,9 +75,31 @@ const Configuration = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "model") {
+        let newSteps;
+        if (value.model == "black-forest-labs/flux-schnell") {
+          newSteps = 4;
+        } else {
+          newSteps = 28;
+        }
+
+        if (newSteps !== undefined) {
+          form.setValue("num_inference_steps", newSteps);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  const generateImage = useGenerateStore((state) => state.generateImage);
+
+  async function onSubmit(values: z.infer<typeof imageGenerationSchema>) {
+    await generateImage(values);
   }
+
   return (
     <div>
       <Form {...form}>
@@ -113,8 +137,12 @@ const Configuration = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Flux Dev">Flux Dev</SelectItem>
-                      <SelectItem value="Flux Schnell">Flux Schnell</SelectItem>
+                      <SelectItem value="black-forest-labs/flux-dev">
+                        Flux Dev
+                      </SelectItem>
+                      <SelectItem value="black-forest-labs/flux-schnell">
+                        Flux Schnell
+                      </SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -190,7 +218,7 @@ const Configuration = () => {
                         min={1}
                         {...field}
                         onChange={(event) => {
-                          field.value = +event.target.value;
+                          field.onChange(+event.target.value);
                         }}
                       ></Input>
                     </FormControl>
@@ -254,7 +282,12 @@ const Configuration = () => {
                     <FormControl>
                       <Slider
                         defaultValue={[field.value]}
-                        max={50}
+                        max={
+                          form.getValues("model") ===
+                          "black-forest-labs/flux-schnell"
+                            ? 4
+                            : 50
+                        }
                         step={1}
                         onValueChange={(value) => field.onChange(value)}
                       />
