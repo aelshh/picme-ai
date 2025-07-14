@@ -30,8 +30,6 @@ const useGenerateStore = create<GenerateState>((set) => ({
         return;
       }
 
-      console.log("data", data);
-
       const dataWithUrl = data.map((url: string) => {
         return {
           url,

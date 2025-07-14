@@ -15,7 +15,6 @@ interface GalleryProps {
 
 const GalleryComponent = ({ images }: GalleryProps) => {
   const [selectedImage, setSelectedImage] = useState<null | ImageProps>(null);
-  console.log(images);
   if (images.length === 0) {
     return (
       <div className="flex justify-center items-center h-[50vh] text-muted-foreground">

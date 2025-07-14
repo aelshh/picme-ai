@@ -39,8 +39,6 @@ export async function logIn(formData: FormData): Promise<AuthResponse> {
     data
   );
 
-  console.log(data);
-
   return {
     error: error?.message || "There was an error loging In!",
     success: !error,

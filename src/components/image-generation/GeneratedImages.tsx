@@ -13,7 +13,6 @@ import useGenerateStore from "@/store/useGenerateStore";
 
 const GeneratedImages = () => {
   const images = useGenerateStore((state) => state.images);
-  console.log(images);
   if (!images || images.length === 0) {
     return (
       <Card className="aspect-square w-full max-w-xl  bg-muted">
