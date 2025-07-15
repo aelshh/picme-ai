@@ -6,7 +6,7 @@ import Replicate from "replicate";
 
 
 
-const WEBHOOK_URL = process.env.SITE_URL || "https://4923db7dfc8f.ngrok-free.app"
+const WEBHOOK_URL = process.env.SITE_URL || "https://00170b440b39.ngrok-free.app"
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN
@@ -63,9 +63,9 @@ export async function POST(request: NextRequest){
     
     const modelId = `model_${Date.now()}_${sanitizedModelName}`
 
-    await replicate.models.create("aelshh",modelId, {
-        visibility: "public", 
-        hardware: "gpu-a100-large"
+    await replicate.models.create("adarsh-9919",modelId, {
+        visibility: "private", 
+        hardware: "gpu-t4"
 
     } )
 
@@ -74,14 +74,15 @@ export async function POST(request: NextRequest){
       "flux-dev-lora-trainer",
       "26dce37af90b9d997eeb970d92e47de3064d46c300504ae376c75bef6a9022d2",
       {
-        destination: `aelshh/${modelId}`,
+        destination: `adarsh-9919/${modelId}`,
         input: {
           steps: 1000,
           resolution: "1024",
           input_images: fileUrl.signedUrl,
           trigger_word: "okhw",
+          
         },
-        webhook: `${WEBHOOK_URL}/api/webhooks/training`,
+        webhook: `${WEBHOOK_URL}/api/webhooks/training?userId=${user.id}&fileName=${encodeURIComponent(fileName)}&modelId=${encodeURIComponent(modelId)}`,
         webhook_events_filter: ["completed"],
       }
     );

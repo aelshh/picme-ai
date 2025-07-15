@@ -36,17 +36,18 @@ export async function fetchModels(){
 }
 
 
-export async function deleteModel(id: number , model_name: string, model_version: string){
+export async function deleteModel(id: number , model_id: string, model_version: string | null){
     const supabase = await createClient()
 
-    if(model_version){
+    if(!model_version === null){
         try{
-            const res = await fetch(`https://api.replicate.com/v1/models/aelshh/${model_name}/versions/${model_version}`, {
+            const res = await fetch(`https://api.replicate.com/v1/models/adarsh-9919/${model_id}/versions/${model_version}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`
                 }
             })
+            console.log(res)
 
             if(!res.ok){
                 throw new Error(`Failed to delete model version form replicate`)
@@ -60,10 +61,9 @@ export async function deleteModel(id: number , model_name: string, model_version
                 success: false
             }
         }
-    }
-    if(model_version){
+    }else{
         try{
-            const res = await fetch(`https://api.replicate.com/v1/models/aelshh/${model_name}`, {
+            const res = await fetch(`https://api.replicate.com/v1/models/adarsh-9919/${model_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`
@@ -71,7 +71,8 @@ export async function deleteModel(id: number , model_name: string, model_version
             })
 
             if(!res.ok){
-                throw new Error(`Failed to delete model form replicate`)
+
+                console.log( await res.json())
             }
         }
         catch(error){

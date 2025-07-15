@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { PostgrestError } from "@supabase/supabase-js";
 import { formatDistance } from "date-fns";
 import {
+  ArrowRight,
   CheckCircle2,
   Clock,
   Loader2,
@@ -52,7 +53,7 @@ const ModelList = ({ models }: ModelListProps) => {
   const handleDelte = async (
     id: number,
     model_name: string,
-    model_version: string
+    model_version: string | null
   ) => {
     toast.loading("Deleting the model...", { id: toastId });
     const { error, success } = await deleteModel(id, model_name, model_version);
@@ -72,7 +73,7 @@ const ModelList = ({ models }: ModelListProps) => {
           <CardDescription>
             You have not trained any models yet. Start by creating a model.
           </CardDescription>
-          <Link href="/mode-training" className="inline-block pt-2">
+          <Link href="/model-training" className="inline-block pt-2">
             <Button className="w-fit">Create Model</Button>
           </Link>
         </CardHeader>
@@ -129,8 +130,8 @@ const ModelList = ({ models }: ModelListProps) => {
                         onClick={() => {
                           handleDelte(
                             model.id,
-                            model?.model_name || " ",
-                            model?.version || " "
+                            model.model_id || " ",
+                            model.version || null
                           );
                         }}
                       >
@@ -172,6 +173,23 @@ const ModelList = ({ models }: ModelListProps) => {
                 </div>
               </div>
             </CardContent>
+            <div className="pt-4">
+              <Link
+                className="flex w-full group "
+                href={
+                  model.training_status === "succeeded"
+                    ? `/image-generate?model_id=${model.model_id}:${model.version}`
+                    : "#"
+                }
+              >
+                <Button
+                  className="w-full group-hover:bg-primary/90 cursor-pointer"
+                  disabled={model.training_status !== "succeeded"}
+                >
+                  Generate Imgaes <ArrowRight className="w-2 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
           </CardHeader>
         </Card>
       ))}

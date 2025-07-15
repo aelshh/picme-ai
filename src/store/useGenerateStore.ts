@@ -25,6 +25,9 @@ const useGenerateStore = create<GenerateState>((set) => ({
 
     try {
       const { error, success, data } = await generateImageAction(values);
+      console.log("error: ", error)
+      console.log("success: ", success)
+      console.log("data: ", data)
       if (!success) {
         set({ error: error, loading: false });
         return;

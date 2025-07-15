@@ -95,6 +95,8 @@ const ModelTrainingForm = () => {
         return;
       }
 
+      toast.loading("Initiating the training process", { id: toastId });
+
       const formData = new FormData();
 
       formData.append("fileKey", res.Key);

@@ -17,11 +17,42 @@ interface GenerateImageResponse {
 export async function generateImageAction(
   input: z.infer<typeof imageGenerationSchema>
 ): Promise<GenerateImageResponse> {
+
+
+
+  if(!process.env.REPLICATE_API_TOKEN){
+    return {
+      error: "Misisng REPLICATE_API_TOKEN in environment variables", 
+      success: false,
+      data: null
+    }
+  }
+
+
+
   const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN,
     useFileOutput: false,
   });
-  const modelInput = {
+
+
+
+
+
+  const modelInput = input.model.startsWith("adarsh-9919")?{
+    model: "dev",
+    lora_scale: 1,
+    prompt: input.prompt,
+    extra_lora_scale: 0,
+    guidance: input.guidance,
+    num_outputs: input.num_outputs,
+    aspect_ratio: input.aspect_ratio,
+    output_format: input.output_format,
+    output_quality: input.output_quality,
+    prompt_strength: 0.8,
+    num_inference_steps: input.num_inference_steps,
+
+  }: {
     prompt: input.prompt,
     go_fast: true,
     guidance: input.guidance,
@@ -33,6 +64,7 @@ export async function generateImageAction(
     prompt_strength: 0.8,
     num_inference_steps: input.num_inference_steps,
   };
+ 
   try {
     const output = await replicate.run(input.model as `${string}/${string}`, {
       input: modelInput,
