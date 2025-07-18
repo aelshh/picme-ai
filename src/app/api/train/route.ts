@@ -6,7 +6,7 @@ import Replicate from "replicate";
 
 
 
-const WEBHOOK_URL = process.env.SITE_URL || "https://00170b440b39.ngrok-free.app"
+const WEBHOOK_URL = process.env.SITE_URL || "https://d53a481c3ad8.ngrok-free.app"
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN

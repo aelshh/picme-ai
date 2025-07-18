@@ -20,7 +20,6 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@/utils/*": ["./src/lib/utils/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/public/*": ["./public/*"],
       "@/datatypes.types": ["./database.types.ts"]
