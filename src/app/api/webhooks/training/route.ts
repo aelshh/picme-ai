@@ -111,6 +111,12 @@ export async function POST(req:Request){
          training_status: body.status, 
       }).eq("user_id", user.user.id).eq("model_id",modelId )
 
+      const {data: oldCredit, error: creditError} = await supabaseAdmin.from("credits").select("model_training_count").eq("user_id", userId).single()
+
+      if(creditError) throw new Error("Error getting user credit")
+
+      await supabaseAdmin.from("credits").update({model_training_count: oldCredit?.model_training_count + 1}).eq('user_id', userId).single()
+
       
       
    }

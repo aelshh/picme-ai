@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Database } from "@/datatypes.types";
 import { imageMeta } from "image-meta";
 import { randomUUID } from "crypto";
+import { getCredits } from "./credit-actions";
 
 interface GenerateImageResponse {
   success: boolean;
@@ -24,6 +25,16 @@ export async function generateImageAction(
     return {
       error: "Misisng REPLICATE_API_TOKEN in environment variables", 
       success: false,
+      data: null
+    }
+  }
+
+  const {data: credits} = await getCredits()
+
+  if(!credits?.image_generation_count || credits.image_generation_count <= 0){
+    return {
+      error: 'No credits available',
+      success: false, 
       data: null
     }
   }

@@ -5,7 +5,8 @@ import {
   upsertPriceRecord,
   manageSubscriptionStatusChange,
   deleteProductRecord,
-  deletePriceRecord
+  deletePriceRecord,
+  updateUserCredits
 } from '@/lib/supabase/admin';
 
 const relevantEvents = new Set([
@@ -28,17 +29,15 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {
-    if (!sig || !webhookSecret)
+    if (!sig || !webhookSecret) {
       return new Response('Webhook secret not found.', { status: 400 });
+    }
     try {
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-      console.log(`🔔  Webhook received: ${event.type}`);
     } catch (err) {
       if (err instanceof Error) {
-        console.log(`❌ Error message: ${err.message}`);
         return new Response(`Webhook Error: ${err.message}`, { status: 400 });
       } else {
-        console.log('❌ Unknown error occurred during webhook construction.');
         return new Response('Webhook Error: Unknown error', { status: 400 });
       }
     }
@@ -80,12 +79,16 @@ export async function POST(req: Request) {
                 true
               );
             }
+            if(checkoutSession.status == "complete" && checkoutSession.payment_status === 'paid'){
+              await  updateUserCredits(checkoutSession.client_reference_id as string, checkoutSession.metadata)
+            }
             break;
           default:
             throw new Error('Unhandled relevant event!');
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
+        
         return new Response(
           'Webhook handler failed. View your Next.js function logs.',
           {
@@ -93,17 +96,12 @@ export async function POST(req: Request) {
           }
         );
       }
-    } else {
-      return new Response(`Unsupported event type: ${event.type}`, {
-        status: 400
-      });
     }
-    return new Response(JSON.stringify({ received: true }), {
-      status: 200,
-      headers: { 'content-type': 'application/json' }
+    return new Response(`Unsupported event type: ${event.type}`, {
+      status: 400
     });
-  } catch (err) {
-    console.log('Unexpected error in Stripe webhook handler:', err);
+  }
+  catch {
     return new Response('Internal server error', { status: 500 });
   }
 }

@@ -17,7 +17,7 @@ export default function RootLayout({
         <div>
           <SidebarTrigger className="ml-2 py-6   px-5 " />
         </div>
-        <main className="flex flex-1 flex-col gap-4 p-17 pt-0">
+        <main className="flex flex-1  flex-col gap-4 p-17 pt-0">
           {" "}
           {children}
         </main>

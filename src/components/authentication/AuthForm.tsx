@@ -6,8 +6,8 @@ import SignupForm from "./SignupForm";
 import Link from "next/link";
 import ResetPassword from "./ResetPassword";
 
-const AuthForm = () => {
-  const [mode, setMode] = useState("login");
+const AuthForm = ({ state }: { state: string | undefined }) => {
+  const [mode, setMode] = useState(state || "login");
   return (
     <div className="flex flex-col space-y-4 text-center">
       {mode === "login" ? (

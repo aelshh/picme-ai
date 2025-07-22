@@ -1,5 +1,21 @@
+import { Tables } from '@/datatypes.types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { cache } from 'react';
+
+
+type Product = Tables<"products">;
+type Prices = Tables<"prices">;
+type Subscription = Tables<"subscriptions">;
+
+
+
+interface PriceWithProducts extends Prices {
+  products: Product | null;
+}
+
+interface SubscriptionWithProduct extends Subscription {
+  prices: PriceWithProducts | null;
+}
 
 export const getUser = cache(async (supabase: SupabaseClient) => {
   const {
@@ -19,7 +35,7 @@ export const getSubscription = cache(async (supabase: SupabaseClient) => {
         console.log(error)
     }
 
-  return subscription;
+  return subscription as SubscriptionWithProduct;
 });
 
 export const getProducts = cache(async (supabase: SupabaseClient) => {

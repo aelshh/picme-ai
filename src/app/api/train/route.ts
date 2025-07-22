@@ -8,6 +8,19 @@ import Replicate from "replicate";
 
 const WEBHOOK_URL = process.env.SITE_URL || "https://d53a481c3ad8.ngrok-free.app"
 
+
+async function validateCredits(userId: string){
+    const {data: userCredit, error} = await supabaseAdmin.from("credits").select("*").eq("user_id", userId).single()
+    if(error) throw new Error("Error getting user credit")
+    
+    const credits  = userCredit.model_training_count ?? 0 
+    if(credits <= 0 ){
+        throw new Error("No credits left for training!")
+
+    }
+    return credits
+}
+
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN
 })
@@ -44,6 +57,8 @@ export async function POST(request: NextRequest){
                 error: "Missing required fields!"
             }, {status: 400})
         }
+
+        const oldCredtis =  await validateCredits(user.id)
 
         const fileName = input.filekey.replace("training-data/", "")
 
@@ -101,6 +116,7 @@ export async function POST(request: NextRequest){
         training_id: training.id
     })
 
+    await supabaseAdmin.from("credits").update({model_training_count: oldCredtis -1 }).eq("user_id", user.id)
 
 
 

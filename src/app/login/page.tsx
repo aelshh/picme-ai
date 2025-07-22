@@ -4,7 +4,16 @@ import AuthImg from "@/public/login.jpg";
 import Logo from "@/components/Logo";
 import AuthForm from "@/components/authentication/AuthForm";
 
-const AuthPage = () => {
+interface SearchParmasType {
+  state?: string;
+}
+
+const AuthPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParmasType>;
+}) => {
+  const state = (await searchParams).state;
   return (
     <main className="grid grid-cols-2 h-screen ">
       <div className="relative h-full ">
@@ -30,7 +39,7 @@ const AuthPage = () => {
       </div>
       <div className=" flex justify-center items-center">
         <div className="w-[340px] mx-auto max-w-xl relative ">
-          <AuthForm />
+          <AuthForm state={state} />
         </div>
       </div>
     </main>
