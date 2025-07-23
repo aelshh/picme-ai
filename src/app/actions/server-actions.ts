@@ -46,8 +46,49 @@ export async function logIn(formData: FormData): Promise<AuthResponse> {
   };
 }
 
+export async function updateProfile(values: {fullName: string}): Promise<AuthResponse> {
+  const supabase = await createClient();
+  const full_name = values.fullName
+  const { data: profileData, error } = await supabase.auth.updateUser({
+    data: {full_name}
+  }
+  );
+
+  return {
+    error: error?.message || "There was an error updating the profile!",
+    success: !error,
+    data: profileData || null,
+  };
+}
+
+export async function resetPassword(values: {email: string}): Promise<AuthResponse> {
+  const supabase = await createClient();
+
+  const { data: resetPasswordData, error } = await supabase.auth.resetPasswordForEmail(values.email
+  );
+
+  return {
+    error: error?.message || "There was an error sending the reset password email!",
+    success: !error,
+    data: resetPasswordData || null,
+  };
+}
+
 export async function signOut(): Promise<void> {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/login");
+}
+
+
+export async function changePassword(newPassword: string): Promise<AuthResponse> {
+  const supabse = await createClient();
+
+  const { data, error } = await supabse.auth.updateUser({password: newPassword});
+
+  return {
+    error: error?.message || "There was an error changin the password!",
+    success: !error,
+    data: data || null,
+  };
 }
