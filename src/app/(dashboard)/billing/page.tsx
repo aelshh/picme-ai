@@ -37,7 +37,7 @@ const BillingPage = async () => {
 
   const { data: credits } = await getCredits();
   return (
-    <section className="flex flex-col  item-center justify-center w-full space-y-5">
+    <section className="flex flex-col    item-center justify-center w-full space-y-5">
       <h1 className="text-3xl font-bold tracking-tight">Plans & Billing</h1>
       <p className="text-muted-foreground">
         Manage your subscription and billing information

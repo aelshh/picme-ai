@@ -24,7 +24,7 @@ const RecentImages = ({ images }: RecentImagesProps) => {
     return (
       <Card className="col-span-3">
         <CardHeader>
-          <CardTitle>Recent Generations</CardTitle>
+          <CardTitle className="text-base">Recent Generations</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center">
           <p className="text-muted-foreground mt-16">
@@ -64,7 +64,7 @@ const RecentImages = ({ images }: RecentImagesProps) => {
                       className="object-cover"
                     />
                     <div className="mt-1">
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <p className=" text-muted-foreground line-clamp-2">
                         {image.prompt}
                       </p>
                     </div>
@@ -78,9 +78,9 @@ const RecentImages = ({ images }: RecentImagesProps) => {
         </Carousel>
         <div className="flex justify-end">
           <Link href={"/gallerys"}>
-            <Button variant={"ghost"} size="sm">
+            <Button variant={"ghost"} size="sm" className="text-base">
               {" "}
-              View gallery <ArrowRight className="ml-2 w-4 h-4 " />
+              View gallery <ArrowRight className="ml-2 w-4 h-4  " />
             </Button>
           </Link>
         </div>

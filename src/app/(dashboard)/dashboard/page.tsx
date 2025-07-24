@@ -20,9 +20,9 @@ export default async function Page() {
   const imageCount = images?.length || 0;
 
   return (
-    <section className=" container mx-auto flex-1 space-y-6">
-      <div className="flex items-center justify-betwee">
-        <h2 className="text-3xl font-bold tracking-tight">
+    <section className="container mx-auto  flex-1 space-y-6 px-2 xs:px-3 sm:px-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <h2 className="text-4xl   font-bold tracking-tight">
           Welcome back, {user?.user_metadata.full_name}
         </h2>
       </div>
@@ -32,17 +32,18 @@ export default async function Page() {
         credits={credits}
       />
 
-      <div className="grid gap-6 grid-cols-4">
-        <RecentImages
-          images={(
-            images?.filter(
-              (img): img is typeof img & { url: string } =>
-                typeof img.url === "string"
-            ) ?? []
-          ).slice(0, 6)}
-        />
-
-        <div className="h-full flex flex-col space-y-6">
+      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
+        <div className="md:col-span-2 xl:col-span-3">
+          <RecentImages
+            images={(
+              images?.filter(
+                (img): img is typeof img & { url: string } =>
+                  typeof img.url === "string"
+              ) ?? []
+            ).slice(0, 6)}
+          />
+        </div>
+        <div className="h-full flex flex-col gap-5 xl:gap-0 xl:space-y-5 col-span-full md:col-span-1 xl:col-span-1">
           <QuickActions />
           <RecentModels models={models ?? []} />
         </div>

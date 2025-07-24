@@ -15,10 +15,10 @@ const GenerateImage = async ({
   const modelId = (await searchParams).model_id;
   const { data: userModels } = await fetchModels();
   return (
-    <section className="container grid flex-1   w-full grid-cols-3 mx-auto overflow-hidden">
+    <section className="container grid flex-1   w-full grid-cols-1 lg:grid-cols-3 mx-auto overflow-hidden">
       <Configuration modelId={modelId} models={userModels} />
 
-      <div className="col-span-2 p-4 rounded-xl h-full flex items-center justify-center ">
+      <div className="col-span-2 mt-3 p-0 lg:p-4 rounded-xl h-full flex items-center justify-center ">
         <GeneratedImages />
       </div>
     </section>

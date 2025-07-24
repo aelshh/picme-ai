@@ -15,30 +15,46 @@ const AuthPage = async ({
 }) => {
   const state = (await searchParams).state;
   return (
-    <main className="grid grid-cols-2 h-screen ">
-      <div className="relative h-full ">
+    <main className="min-h-screen flex flex-col lg:grid lg:grid-cols-2">
+      {/* Left Side: Image & Quote */}
+      <div className="relative h-64 min-h-[320px] lg:h-full w-full">
         <Image
           src={AuthImg}
           alt="login image"
-          className=" h-full w-full object-cover "
+          fill
+          className="object-cover"
+          priority
+          sizes="(max-width: 1024px) 100vw, 50vw"
         />
-
-        <div className="bg-gradient-to-b from-black/50 to-transparent absolute top-0 h-[30%] w-full z-10 "></div>
-        <div className="bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 h-[50%] w-full z-10 "></div>
-        <div className="z-20  top-7 left-7 text-primary-foreground absolute">
-          <Logo />
+        {/* Top Gradient */}
+        <div className="bg-gradient-to-b from-black/60 to-transparent absolute top-0 h-[30%] w-full z-10" />
+        {/* Bottom Gradient */}
+        <div className="bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 h-[50%] w-full z-10" />
+        {/* Logo */}
+        <div className="z-20 top-4 left-4 sm:top-7 sm:left-7 text-primary-foreground absolute">
+          <Logo className="h-8 w-auto sm:h-10 text-white/80" />
         </div>
-        <blockquote className="absolute bottom-7 left-7  z-20 text-primary-foreground">
-          <p>
+        {/* Quote */}
+        <blockquote className="absolute bottom-4 left-4 sm:bottom-7 sm:left-7 z-20 text-primary-foreground max-w-[90%] sm:max-w-xs">
+          <p className="text-base sm:text-lg md:text-xl font-medium leading-snug">
             &quot;Picme AI is a game changer for me. I have been able to
             generate high quality professional headshots within minutes. It has
             saved me countless hours of work and cost as well.&quot;
           </p>
-          <footer className="text-sm mt-2">David S.</footer>
+          <footer className="text-xs sm:text-sm mt-2 font-semibold opacity-80">
+            David S.
+          </footer>
         </blockquote>
       </div>
-      <div className=" flex justify-center items-center">
-        <div className="w-[340px] mx-auto max-w-xl relative ">
+      {/* Right Side: Auth Form */}
+      <div className="flex flex-1 justify-center items-center py-8 px-4 sm:px-8 bg-background">
+        <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl mx-auto">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center text-primary">
+            Welcome Back
+          </h1>
+          <p className="mb-8 text-base sm:text-lg text-muted-foreground text-center">
+            Sign in to your account to continue
+          </p>
           <AuthForm state={state} />
         </div>
       </div>

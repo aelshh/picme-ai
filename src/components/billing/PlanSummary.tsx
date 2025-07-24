@@ -101,7 +101,7 @@ const PlanSummary = ({
   const maxModelTrainCount = credits.max_model_training_count ?? 0;
 
   return (
-    <Card className="max-w-5/6">
+    <Card className="w-full xl:max-w-5/6">
       <CardHeader className=" flex items-center ">
         <span className="font-semibold">Plan Summary</span>{" "}
         <Badge className="bg-muted-foreground/20 text-black rounded-full ">
@@ -109,7 +109,7 @@ const PlanSummary = ({
         </Badge>
       </CardHeader>
       <CardContent className="w-full">
-        <div className="w-3/5">
+        <div className="xl:w-3/5 w-full">
           <div className=" flex items-center justify-between text-sm mb-1">
             <span className="font-semibold text-base">
               {imageGenCount}/{maxIamgeGenCount}
@@ -123,8 +123,8 @@ const PlanSummary = ({
             max={100}
           />
         </div>
-        <div className="mt-5 flex justify-between">
-          <div className="w-3/5">
+        <div className="mt-5 flex flex-col xl:flex-row gap-5 xl:gap-0 justify-between">
+          <div className="xl:w-3/5 w-full">
             <div className=" flex items-center justify-between text-sm mb-1">
               <span className="font-semibold text-base">
                 {modelTrainingCount}/{maxModelTrainCount}

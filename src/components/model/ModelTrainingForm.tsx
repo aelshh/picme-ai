@@ -127,7 +127,7 @@ const ModelTrainingForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <fieldset className="grid max-w-5xl bg-background p-8 rounded-lg gap-6 border">
+        <fieldset className="grid max-w-5xl bg-background p-4 sm:p-8 rounded-lg gap-6 border">
           <FormField
             control={form.control}
             name="modelName"

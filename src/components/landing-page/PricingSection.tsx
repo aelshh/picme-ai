@@ -29,8 +29,8 @@ interface PricingSectionProps {
 const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
   const [billingInterval, setBillingIntercval] = useState("month");
   return (
-    <section className="flex flex-col items-center jutify-center relative bg-accent py-20  ">
-      <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]  ">
+    <section className="flex flex-col items-center justify-center relative bg-accent py-10 sm:py-16 lg:py-20 w-full">
+      <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]">
         <span
           className={cn(
             "absolute inset-0 block h-full w-full animate-gradient rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]"
@@ -48,15 +48,20 @@ const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
           Pricing
         </AnimatedGradientText>
       </div>
-      <h1 className="font-bold text-3xl pb-1 mt-3">
+      <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold mt-3 text-center">
         Choose The Plan That Fits Your Needs
-      </h1>
-      <p className="text-muted-foreground w-3xl text-center">
-        Choose and affordable plan that is packed with the best features for
-        engaging your audience, creating customer loyality and driving sales.
+      </h2>
+      <p className="text-base text-muted-foreground lg:max-w-[75%] text-center ">
+        Choose an affordable plan that is packed with the best features for
+        engaging your audience, creating customer loyalty and driving sales.
       </p>
-      <div className="flex gap-3 items-center justify-center pt-15">
-        <Label htmlFor="billingInterval"> Monthly</Label>
+      <div className="flex gap-2 xs:gap-3 items-center justify-center pt-6 xs:pt-10">
+        <Label
+          htmlFor="billingInterval"
+          className="text-xs xs:text-sm sm:text-base"
+        >
+          Monthly
+        </Label>
         <Switch
           id="billingInterval"
           checked={billingInterval === "year"}
@@ -64,9 +69,14 @@ const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
             setBillingIntercval(checked ? "year" : "month");
           }}
         />
-        <Label htmlFor="billingInterval"> Yearly</Label>
+        <Label
+          htmlFor="billingInterval"
+          className="text-xs xs:text-sm sm:text-base"
+        >
+          Yearly
+        </Label>
       </div>
-      <div className="flex items-center gap-9  jutify-between w-screen   px-40  mt-15  ">
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full px-4 xs:px-8 sm:px-12 lg:px-20 mt-10">
         {products.map((product) => {
           const price = product.prices.find(
             (price) => price.interval === billingInterval
@@ -85,31 +95,33 @@ const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
             <div
               key={price.id}
               className={cn(
-                `1w-[400px] bg-white px-4 pb-8  divide-y divide-border border-border rounded-lg py-5  border`,
+                `w-full max-w-xs xs:max-w-sm sm:max-w-md lg:max-w-[400px] bg-white px-4 pb-8 divide-y divide-border border-border rounded-lg py-5 border shadow-sm`,
                 product.name?.toLocaleLowerCase() ===
                   popular.toLocaleLowerCase()
-                  ? "border-primary scale-105 bg-background drop-shadown-md"
+                  ? "border-primary scale-105 bg-background drop-shadow-md"
                   : "border-border"
               )}
             >
               <div>
-                <h2 className=" text-xl font-semibold flex item-center justify-between">
+                <h2 className="text-lg xs:text-xl font-semibold flex items-center justify-between">
                   {product.name}{" "}
                   {product.name?.toLocaleLowerCase() ===
                     popular.toLocaleLowerCase() && (
-                    <Badge className="rounded-full h-fit  ">Most Popular</Badge>
+                    <Badge className="rounded-full h-fit">Most Popular</Badge>
                   )}
                 </h2>
-                <p className="text-muted-foreground text-sm mt-3">
+                <p className="text-muted-foreground text-xs xs:text-sm mt-3">
                   {product.description}
                 </p>
-                <h1 className="mb-10 mt-6">
-                  <span className="text-3xl font-bold">{priceString}</span>
+                <h1 className="mb-8 mt-6">
+                  <span className="text-2xl xs:text-3xl font-bold">
+                    {priceString}
+                  </span>
                   <span className="text-muted-foreground">
                     /{billingInterval}
                   </span>
                 </h1>
-                <Link className="" href="/login?state=signup">
+                <Link href="/login?state=signup">
                   <Button
                     className={cn(`w-full mb-5`)}
                     variant={product.name === "Pro" ? "default" : "secondary"}
@@ -120,14 +132,13 @@ const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
               </div>
               <div className="mt-5 space-y-3">
                 <h3 className="text-xs font-medium mb-5">
-                  {" "}
                   WHAT&apos;S INCLUDED
                 </h3>
                 {Object.values(product.metadata as object).map(
                   (value, index) => (
-                    <div key={index} className="flex   gap-2 items-center">
+                    <div key={index} className="flex gap-2 items-center">
                       <Check className="w-4 h-4" />
-                      <li className="list-none "> {value}</li>
+                      <li className="list-none">{value}</li>
                     </div>
                   )
                 )}

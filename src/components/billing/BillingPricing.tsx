@@ -193,7 +193,7 @@ const BillingPricing = ({
         </div>
       )}
 
-      <div className="flex items-center gap-9  justify-between w-full   px-10  mt-15  ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 w-full px-0 mt-15">
         {products?.map((product) => {
           const price = product.prices.find(
             (price) => price.interval === billingInterval
@@ -212,22 +212,22 @@ const BillingPricing = ({
             <div
               key={price.id}
               className={cn(
-                ` bg-white px-4 pb-8  w-full  border-border rounded-lg py-5  border`,
+                `bg-white px-4 pb-8 w-full border-border rounded-lg py-5 border`,
                 product.name?.toLocaleLowerCase() ===
                   activeProduct?.toLocaleLowerCase()
-                  ? "border-primary  bg-background drop-shadown-md"
+                  ? "border-primary bg-background drop-shadown-md"
                   : "border-border"
               )}
             >
-              <h2 className=" text-xl font-semibold flex item-center justify-between">
+              <h2 className="text-xl font-semibold flex items-center justify-between">
                 {product.name}{" "}
                 {product.name?.toLocaleLowerCase() ===
                   activeProduct?.toLocaleLowerCase() && (
-                  <Badge className="rounded-full h-fit  ">Selected</Badge>
+                  <Badge className="rounded-full h-fit">Selected</Badge>
                 )}
                 {product.name?.toLocaleLowerCase() ===
                   popular?.toLocaleLowerCase() && (
-                  <Badge className="rounded-full h-fit  ">Most Popular</Badge>
+                  <Badge className="rounded-full h-fit">Most Popular</Badge>
                 )}
               </h2>
               <p className="text-muted-foreground text-sm mt-3">
@@ -244,7 +244,7 @@ const BillingPricing = ({
                 subscription,
                 user,
                 price,
-                popular: popular ??   "",
+                popular: popular ?? "",
                 handleStripeCheckout,
                 handleStripePortalRequest,
               })}

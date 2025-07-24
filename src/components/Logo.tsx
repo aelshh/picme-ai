@@ -2,14 +2,19 @@ import { Sparkles } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const Logo = () => {
+interface LogoProps {
+  className?: string;
+}
+
+const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
     <Link
       href="/"
-      className="flex gap-2 items-center justify-center text-primary-foreground "
+      className="flex gap-2  items-center justify-center text-black
+       "
     >
-      <Sparkles strokeWidth={1.5} />
-      <span className="font-semibold">Picme AI</span>
+      <Sparkles strokeWidth={1.5} className={className} />
+      <span className="font-semibold text-white/80">Picme AI</span>
     </Link>
   );
 };

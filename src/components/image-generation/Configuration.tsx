@@ -184,7 +184,7 @@ const Configuration = ({ models, modelId }: ConfigurationProps) => {
                 </FormItem>
               )}
             />
-            <div className="w-full flex  gap-4 items-center justify-between">
+            <div className="w-full flex flex-col xl:flex-row gap-4 items-center justify-between">
               <FormField
                 control={form.control}
                 name="aspect_ratio"

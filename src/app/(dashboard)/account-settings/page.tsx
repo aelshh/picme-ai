@@ -13,7 +13,7 @@ const AccountSettings = async () => {
     return redirect("/login");
   }
   return (
-    <section className="container mx-auto space-y-8">
+    <section className="container  mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
         <p className="text-muted-foreground">
