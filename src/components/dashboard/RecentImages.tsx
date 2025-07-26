@@ -65,7 +65,9 @@ const RecentImages = ({ images }: RecentImagesProps) => {
                     />
                     <div className="mt-1">
                       <p className=" text-muted-foreground line-clamp-2">
-                        {image.prompt}
+                        {image.prompt?.startsWith(`photo of a okhw man`)
+                          ? image.prompt.replace(/^photo of a okhw man\s*/i, "")
+                          : image.prompt}
                       </p>
                     </div>
                   </div>
@@ -73,12 +75,16 @@ const RecentImages = ({ images }: RecentImagesProps) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-2" />
-          <CarouselNext className="right-2" />
+          <CarouselPrevious className="left-2 cursor-pointer" />
+          <CarouselNext className="right-2 cursor-pointer" />
         </Carousel>
         <div className="flex justify-end">
-          <Link href={"/gallerys"}>
-            <Button variant={"ghost"} size="sm" className="text-base">
+          <Link href={"/gallery"}>
+            <Button
+              variant={"ghost"}
+              size="sm"
+              className="text-base cursor-pointer"
+            >
               {" "}
               View gallery <ArrowRight className="ml-2 w-4 h-4  " />
             </Button>

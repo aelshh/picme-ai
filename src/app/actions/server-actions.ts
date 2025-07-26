@@ -86,6 +86,12 @@ export async function changePassword(newPassword: string): Promise<AuthResponse>
 
   const { data, error } = await supabse.auth.updateUser({password: newPassword});
 
+  if(data){
+    await supabse.auth.signOut()
+  }
+
+  
+
   return {
     error: error?.message || "There was an error changin the password!",
     success: !error,

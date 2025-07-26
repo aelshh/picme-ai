@@ -180,7 +180,7 @@ const BillingPricing = ({
         </div>
       )}
       {showInterval && (
-        <div className="flex gap-3 items-center  justify-between pt-15">
+        <div className="flex gap-3 items-center  w-30 mx-auto justify-between pt-15">
           <Label htmlFor="billingInterval"> Monthly</Label>
           <Switch
             id="billingInterval"

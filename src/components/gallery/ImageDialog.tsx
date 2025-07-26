@@ -41,17 +41,17 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
   };
   return (
     <Sheet open={true} onOpenChange={onClose}>
-      <SheetContent className="max-w-full sm:max-w-xl w-full">
+      <SheetContent className="max-w-full sm:max-w-5xl w-full">
         <SheetHeader>
           <SheetTitle className="text-2xl w-full">Image Details</SheetTitle>
-          <ScrollArea className="h-screen ">
-            <div className="relative w-fit h-fit  ">
+          <ScrollArea className="h-screen  ">
+            <div className="relative w-fit  mx-auto h-fit  ">
               <Image
                 src={image.url || " "}
                 alt={image.prompt || " "}
                 height={image.height || 0}
                 width={image.width || 0}
-                className="w-full h-auto flex mb-3 rounded"
+                className="w-full   h-auto  flex mb-3 rounded"
               />
               <div className="flex  gap-4 absolute bottom-4 right-4">
                 <Button className="w-fit" onClick={handleDownload}>
@@ -75,20 +75,20 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
               {image.prompt}
             </p>
             <hr className="w-full inline-block border-primary/30 my-3" />
-            <div className="flex flex-wrap gap-3 mb-32">
+            <div className="flex flex-wrap max-w-full gap-3 mb-32">
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm  font-normal"
               >
-                <span className="text-primary uppercase mr-2 font-semibold">
+                <span className="text-primary max-w-40 uppercase mr-2 font-semibold">
                   Model ID:
                 </span>
-                {image.model}
+                {image.model?.split(":")[0]}
               </Badge>
 
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm font-normal"
               >
                 <span className="text-primary uppercase mr-2 font-semibold">
                   Aspect Ratio:
@@ -97,7 +97,7 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
               </Badge>
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm font-normal"
               >
                 <span className="text-primary uppercase mr-2 font-semibold">
                   Dimensions:
@@ -106,7 +106,7 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
               </Badge>
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm font-normal"
               >
                 <span className="text-primary uppercase mr-2 font-semibold">
                   Guidance:
@@ -115,7 +115,7 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
               </Badge>
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm font-normal"
               >
                 <span className="text-primary uppercase mr-2 font-semibold">
                   Inference Steps:
@@ -124,7 +124,7 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
               </Badge>
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm font-normal"
               >
                 <span className="text-primary uppercase mr-2 font-semibold">
                   Output Format:
@@ -133,7 +133,7 @@ const ImageDialog = ({ image, onClose }: ImageDialogProps) => {
               </Badge>
               <Badge
                 variant={"secondary"}
-                className="rounded-full border border-primary/30 px-4 py-2 text-sm font-normal"
+                className="rounded-full border border-primary/30 px-4 py-2 text-xs sm:text-sm font-normal"
               >
                 <span className="text-primary uppercase mr-2 font-semibold">
                   Created At:

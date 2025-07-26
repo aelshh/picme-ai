@@ -83,7 +83,7 @@ const Faqs = () => {
           FAQs
         </AnimatedGradientText>
       </div>
-      <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold mt-4">
+      <h2 className="text-2xl xs:text-3xl text-center sm:text-4xl font-bold mt-4">
         Frequently Asked Questions
       </h2>
       <p className="text-base text-muted-foreground lg:max-w-[75%] mt-4 text-center">

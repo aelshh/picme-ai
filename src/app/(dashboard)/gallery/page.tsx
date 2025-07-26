@@ -1,6 +1,11 @@
 import { getImages } from "@/app/actions/image-actions";
 import GalleryComponent from "@/components/gallery/GalleryComponent";
+import { Tables } from "@/datatypes.types";
 import React from "react";
+
+type ImageProps = {
+  url: string | undefined;
+} & Tables<"generated_images">;
 
 const MyImages = async () => {
   const { data: images } = await getImages();
@@ -11,7 +16,7 @@ const MyImages = async () => {
         Here you can see all the images you have generated. Click on an image to
         view the detials.
       </p>
-      <GalleryComponent images={images || []} />
+      <GalleryComponent images={(images as ImageProps[]) ?? []} />
     </section>
   );
 };

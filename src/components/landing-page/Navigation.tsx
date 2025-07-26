@@ -44,7 +44,7 @@ const Navigation = () => {
   return (
     <div className="w-full bg-background/60 backdrop-blur-md fixed top-0 px-8 py-4 z-50 shadow-xl overflow-hidden">
       <header className=" container mx-auto flex items-center ">
-        <Logo />
+        <Logo className="text-black" />
         <nav className="ml-auto hidden md:flex items-center justify-center gap-6">
           <NavItems />
         </nav>

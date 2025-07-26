@@ -42,7 +42,7 @@ const PriceSheet = ({ user, products, subscription }: PlanSummaryProps) => {
         <SheetHeader>
           <BillingPricing
             popular="pro"
-            user={user}
+            user={user!}
             products={products || []}
             subscription={subscription}
           />

@@ -147,7 +147,7 @@ const PlanSummary = ({
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-sm text-black/60 font-medium">
-                Included Credits
+                Included Credits  
               </span>
               <span className="font-semibold text-sm">0 credits</span>
             </div>

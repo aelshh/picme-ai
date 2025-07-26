@@ -6,8 +6,6 @@ import { Tables } from "@/datatypes.types";
 import { getProducts, getSubscription, getUser } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 
-import { redirect } from "next/navigation";
-
 import React from "react";
 
 type Product = Tables<"products">;
@@ -31,10 +29,6 @@ const BillingPage = async () => {
   ]);
   console.log(subscription);
 
-  if (!user) {
-    redirect("/login");
-  }
-
   const { data: credits } = await getCredits();
   return (
     <section className="flex flex-col    item-center justify-center w-full space-y-5">
@@ -49,11 +43,11 @@ const BillingPage = async () => {
         products={products}
         subscription={subscription}
       />
-      {subscription.status === "active" && (
+      {subscription?.status === "active" && (
         <BillingPricing
-          user={user}
+          user={user!}
           products={products}
-          subscription={subscription as SubscriptionWithProduct}
+          subscription={(subscription as SubscriptionWithProduct) || null}
           showInterval={false}
           activeProduct={
             subscription.prices?.products?.name?.toLocaleLowerCase() || "pro"

@@ -163,7 +163,7 @@ const LoginForm = ({ className }: { className?: string }) => {
             disabled={loading}
             className="w-full cursor-pointer"
           >
-            Sign In
+            Sign Up
             {loading && <Loader2 className="animate-spin  text-gray-200" />}
           </Button>
         </form>

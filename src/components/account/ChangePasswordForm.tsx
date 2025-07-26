@@ -19,7 +19,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { changePassword } from "@/app/actions/server-actions";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 const passwordRegex =
@@ -41,6 +41,7 @@ const formSchema = z.object({
 });
 
 const ChangePasswordForm = ({ className }: { className?: string }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const toastId = useId();
 
@@ -52,15 +53,18 @@ const ChangePasswordForm = ({ className }: { className?: string }) => {
       const { success, error } = await changePassword(values.password);
       if (!success) {
         setLoading(false);
+        console.log("first toast");
         toast.error(error, { id: toastId });
       } else {
         setLoading(false);
         toast.success("Password is successfully updated!", {
           id: toastId,
         });
-        redirect("/login");
+
+        router.push("/login");
       }
     } catch (error: any) {
+      console.log("second toast");
       toast.error(String(error.message), { id: toastId });
     } finally {
       setLoading(false);
@@ -75,11 +79,11 @@ const ChangePasswordForm = ({ className }: { className?: string }) => {
   });
   return (
     <div className={cn(className)}>
-      <div className="flex flex-col space-y-2 text-center">
+      <div className="flex flex-col mb-6 space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
           Change Password
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm -mt-2 text-muted-foreground">
           Enter your new password below to change/update your password.
         </p>
       </div>

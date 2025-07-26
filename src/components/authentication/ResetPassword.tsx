@@ -22,7 +22,7 @@ const formSchema = z.object({
   email: z.string().email("Enter a Valid Email"),
 });
 
-const LoginForm = ({ className }: { className?: string }) => {
+const ResetPasswordPage = ({ className }: { className?: string }) => {
   const toastId = useId();
   async function onSubmit(values: z.infer<typeof formSchema>) {
     toast.loading("Sending password reset email...", { id: toastId });
@@ -84,4 +84,4 @@ const LoginForm = ({ className }: { className?: string }) => {
   );
 };
 
-export default LoginForm;
+export default ResetPasswordPage;

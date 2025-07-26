@@ -6,20 +6,20 @@ import ChangePasswordForm from "@/components/account/ChangePasswordForm";
 
 const ResetPasswordPage = async () => {
   return (
-    <main className="grid grid-cols-2 h-screen ">
-      <div className="relative h-full ">
+    <main className="grid grid-cols-1 md:grid-cols-2 h-screen  ">
+      <div className="relative hidden md:block  h-full ">
         <Image
           src={AuthImg}
           alt="login image"
-          className=" h-full w-full object-cover "
+          className=" h-full  w-full object-cover "
         />
 
         <div className="bg-gradient-to-b from-black/50 to-transparent absolute top-0 h-[30%] w-full z-10 "></div>
         <div className="bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 h-[50%] w-full z-10 "></div>
         <div className="z-20  top-7 left-7 text-primary-foreground absolute">
-          <Logo />
+          <Logo className="text-white" />
         </div>
-        <blockquote className="absolute bottom-7 left-7  z-20 text-primary-foreground">
+        <blockquote className="absolute bottom-7 left-7   z-20 text-primary-foreground">
           <p>
             &quot;Picme AI is a game changer for me. I have been able to
             generate high quality professional headshots within minutes. It has
@@ -28,10 +28,10 @@ const ResetPasswordPage = async () => {
           <footer className="text-sm mt-2">David S.</footer>
         </blockquote>
       </div>
-      <div className=" flex justify-center items-center">
-        <div className="w-[340px] mx-auto max-w-xl relative ">
+      <div className=" flex justify-center  items-center">
+        <div className="w-[340px]  px-5 md:px-0 max-w-xl relative ">
           {/* change password form */}
-          <ChangePasswordForm />  
+          <ChangePasswordForm />
         </div>
       </div>
     </main>

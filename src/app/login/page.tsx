@@ -3,6 +3,8 @@ import React from "react";
 import AuthImg from "@/public/login.jpg";
 import Logo from "@/components/Logo";
 import AuthForm from "@/components/authentication/AuthForm";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 interface SearchParmasType {
   state?: string;
@@ -14,10 +16,20 @@ const AuthPage = async ({
   searchParams: Promise<SearchParmasType>;
 }) => {
   const state = (await searchParams).state;
+
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await (await supabase).auth.getUser();
+  if (user) {
+    redirect("/dashboard");
+  }
+
   return (
-    <main className="min-h-screen flex flex-col lg:grid lg:grid-cols-2">
+    <main className="min-h-screen flex  flex-col lg:grid lg:grid-cols-2">
       {/* Left Side: Image & Quote */}
-      <div className="relative h-64 min-h-[320px] lg:h-full w-full">
+      <div className="relative  hidden sm:block h-64 min-h-[320px] lg:h-full w-full">
         <Image
           src={AuthImg}
           alt="login image"
@@ -32,11 +44,11 @@ const AuthPage = async ({
         <div className="bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 h-[50%] w-full z-10" />
         {/* Logo */}
         <div className="z-20 top-4 left-4 sm:top-7 sm:left-7 text-primary-foreground absolute">
-          <Logo className="h-8 w-auto sm:h-10 text-white/80" />
+          <Logo className="h-8 w-auto  text-white/80" />
         </div>
         {/* Quote */}
-        <blockquote className="absolute bottom-4 left-4 sm:bottom-7 sm:left-7 z-20 text-primary-foreground max-w-[90%] sm:max-w-xs">
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-snug">
+        <blockquote className="absolute bottom-4 left-4 sm:bottom-7 sm:left-7 z-20 text-primary-foreground max-w-[90%] ">
+          <p className="text-base   leading-snug">
             &quot;Picme AI is a game changer for me. I have been able to
             generate high quality professional headshots within minutes. It has
             saved me countless hours of work and cost as well.&quot;
@@ -52,9 +64,7 @@ const AuthPage = async ({
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center text-primary">
             Welcome Back
           </h1>
-          <p className="mb-8 text-base sm:text-lg text-muted-foreground text-center">
-            Sign in to your account to continue
-          </p>
+
           <AuthForm state={state} />
         </div>
       </div>

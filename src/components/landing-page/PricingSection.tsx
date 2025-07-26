@@ -76,7 +76,7 @@ const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
           Yearly
         </Label>
       </div>
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full px-4 xs:px-8 sm:px-12 lg:px-20 mt-10">
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full  px-8 xs:px-8 sm:px-12 lg:px-20 mt-10">
         {products.map((product) => {
           const price = product.prices.find(
             (price) => price.interval === billingInterval

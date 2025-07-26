@@ -9,7 +9,7 @@ import ResetPassword from "./ResetPassword";
 const AuthForm = ({ state }: { state: string | undefined }) => {
   const [mode, setMode] = useState(state || "login");
   return (
-    <div className="flex flex-col space-y-4 text-center">
+    <div className="flex flex-col   w-full sm:max-w-xs md:max-w-sm lg:max-w-md mx-auto space-y-4 text-center">
       {mode === "login" ? (
         <h1 className="font-semibold tracking-tight text-2xl">Login</h1>
       ) : mode === "signup" ? (
@@ -18,21 +18,21 @@ const AuthForm = ({ state }: { state: string | undefined }) => {
         <h1 className="font-bold text-xl">Reset Password</h1>
       )}
       {mode === "login" ? (
-        <p className="text-sm text-muted-foreground  mb-9">
+        <p className="text-sm text-muted-foreground  -mt-3  mb-9">
           Enter your email below to login your account
         </p>
       ) : mode === "signup" ? (
-        <p className="text-sm text-muted-foreground  mb-9">
+        <p className="text-sm text-muted-foreground -mt-3  mb-9">
           Enter your information below to create an account
         </p>
       ) : (
-        <p className="text-sm text-muted-foreground  mb-9">
+        <p className="text-sm text-muted-foreground -mt-3  mb-9">
           Enter your email below to reset your password
         </p>
       )}
       {mode === "login" ? (
         <>
-          <LoginForm className="w-full text-left" />
+          <LoginForm className="w-full  text-left" />
           <div className="flex items-center justify-between">
             <Button
               variant={"link"}
@@ -60,7 +60,7 @@ const AuthForm = ({ state }: { state: string | undefined }) => {
           >
             Already have an account? Log In{" "}
           </Button>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground -mt-5 text-sm">
             By clicking signup, you agree our{" "}
             <Link
               href="#"

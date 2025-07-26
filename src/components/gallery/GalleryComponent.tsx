@@ -41,8 +41,8 @@ const GalleryComponent = ({ images }: GalleryProps) => {
               </div>
             </div>
             <Image
-              src={image.url || " "}
-              alt={image.prompt || " "}
+              src={image.url || ""}
+              alt={image.prompt || ""}
               height={image.height || 0}
               width={image.width || 0}
               className="object-cover rounded"

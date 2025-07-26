@@ -6,7 +6,7 @@ import Replicate from "replicate";
 
 
 
-const WEBHOOK_URL = process.env.SITE_URL || "https://d53a481c3ad8.ngrok-free.app"
+const WEBHOOK_URL = process.env.SITE_URL || "https://5e02320c4e49.ngrok-free.app"
 
 
 async function validateCredits(userId: string){
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest){
 
     await replicate.models.create("adarsh-9919",modelId, {
         visibility: "private", 
-        hardware: "gpu-t4"
+        hardware: "gpu-a100-large"
 
     } )
 
