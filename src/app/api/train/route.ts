@@ -6,7 +6,7 @@ import Replicate from "replicate";
 
 
 
-const WEBHOOK_URL = process.env.SITE_URL || "https://5e02320c4e49.ngrok-free.app"
+const WEBHOOK_URL = process.env.SITE_URL || "https://16fbcf902ec1.ngrok-free.app"
 
 
 async function validateCredits(userId: string){

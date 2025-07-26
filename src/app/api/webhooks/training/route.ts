@@ -60,7 +60,7 @@ export async function POST(req:Request){
 
 
       const {error} = await resend.emails.send({
-         from: 'Picme AI <onboarding@resend.dev>',
+         from: 'Picme AI <hello@adarshchaudhary.in>',
          to:  [userEmail],
          subject: 'Update for your model training',
          react: EmailTemplate({username, message: `Your model training as been succeeded.`})
@@ -95,7 +95,7 @@ export async function POST(req:Request){
 
    }else{
        const { error} = await resend.emails.send({
-         from: 'Picme AI <onboarding@resend.dev>',
+         from: 'Picme AI <hello@adarshchaudhary.in>',
          to:  [userEmail],
          subject: 'Update for your model training',
          react: EmailTemplate({username, message: `Your model training as been ${body.status}.`})

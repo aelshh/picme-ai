@@ -13,13 +13,11 @@ export default function RootLayout({
   return (
     <SidebarProvider>
       <div className="flex items-start">
-     
         <div className="hidden lg:flex">
           <AppSidebar />
-        
+
           <SidebarTrigger className="ml-2 my-6" />
         </div>
-  
       </div>
       <SidebarInset>
         <main className="flex flex-1 flex-col gap-4 p-2 xs:p-3 sm:p-4 md:p-6 lg:p-8 xl:p-10 pt-0">
