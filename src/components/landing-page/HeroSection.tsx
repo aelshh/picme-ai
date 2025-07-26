@@ -95,11 +95,10 @@ const Images = [
 
 const MarqueeColumn = ({
   reverse,
-  duration,
   className,
 }: {
   reverse: boolean;
-  duration: string;
+
   className?: string;
 }) => {
   return (
@@ -108,10 +107,9 @@ const MarqueeColumn = ({
       pauseOnHover
       vertical
       className={cn(
-        `w-full relative h-full flex flex-col justify-center items-center `,
+        `w-full relative h-full flex flex-col justify-center items-center [--duration:120s] `,
         className
       )}
-      style={{ "--duration": duration }}
     >
       {Images.sort(() => Math.random() - 0.5).map((image, index) => {
         return (
@@ -189,24 +187,12 @@ const HeroSection = () => {
         </Link>
       </div>
       <div className="absolute top-0 w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5   xl:grid-cols-6   z-10 ">
-        <MarqueeColumn reverse={false} duration="120s" />
-        <MarqueeColumn reverse={true} duration="120s" />
-        <MarqueeColumn reverse={false} duration="120s" />
-        <MarqueeColumn
-          reverse={true}
-          duration="120s"
-          className="hidden md:flex"
-        />
-        <MarqueeColumn
-          reverse={false}
-          duration="120s"
-          className="hidden lg:flex"
-        />
-        <MarqueeColumn
-          reverse={true}
-          duration="120s"
-          className="hidden lg:flex"
-        />
+        <MarqueeColumn reverse={false} />
+        <MarqueeColumn reverse={true} />
+        <MarqueeColumn reverse={false} />
+        <MarqueeColumn reverse={true} className="hidden md:flex" />
+        <MarqueeColumn reverse={false} className="hidden lg:flex" />
+        <MarqueeColumn reverse={true} className="hidden lg:flex" />
       </div>
     </section>
   );
