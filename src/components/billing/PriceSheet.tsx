@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import BillingPricing from "./BillingPricing";
+import { ScrollArea } from "../ui/scroll-area";
 
 type Product = Tables<"products">;
 type Prices = Tables<"prices">;
@@ -38,14 +39,16 @@ const PriceSheet = ({ user, products, subscription }: PlanSummaryProps) => {
       <SheetTrigger asChild>
         <Button variant={"outline"}>Upgrade</Button>
       </SheetTrigger>
-      <SheetContent className="md:max-w-6xl lg:max-w-7xl sm:max-w-sm">
+      <SheetContent className="md:max-w-6xl max-w-xs lg:max-w-7xl sm:max-w-sm">
         <SheetHeader>
-          <BillingPricing
-            popular="pro"
-            user={user!}
-            products={products || []}
-            subscription={subscription}
-          />
+          <ScrollArea className="h-screen">
+            <BillingPricing
+              popular="pro"
+              user={user!}
+              products={products || []}
+              subscription={subscription}
+            />
+          </ScrollArea>
         </SheetHeader>
       </SheetContent>
     </Sheet>

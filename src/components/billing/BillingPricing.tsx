@@ -164,7 +164,9 @@ const BillingPricing = ({
     return router.push(redirectUrl);
   };
   return (
-    <section className={cn(`flex flex-col  relative py-2  w-full `, className)}>
+    <section
+      className={cn(`flex flex-col  relative py-2 pb-10  w-full `, className)}
+    >
       {showInterval && (
         <div>
           <h1
