@@ -47,6 +47,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.60.0",
     "react-resizable-panels": "^3.0.3",
+    "react-spinners": "^0.17.0",
     "recharts": "^3.0.2",
     "replicate": "^1.0.1",
     "resend": "^4.6.0",
