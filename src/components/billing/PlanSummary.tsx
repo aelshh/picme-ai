@@ -39,14 +39,14 @@ const PlanSummary = ({
 }: PlanSummaryProps) => {
   if (!credits || !subscription || subscription.status !== "active") {
     return (
-      <Card className="w-3/4">
+      <Card className="w-full md:w-3/4">
         <CardHeader className=" flex items-center ">
           <span className="font-semibold">Plan Summary</span>{" "}
           <Badge className="bg-muted-foreground/20 text-black rounded-full ">
             No Plan
           </Badge>
         </CardHeader>
-        <CardContent className="w-3/5">
+        <CardContent className="w-full md:w-3/5">
           <div>
             <div className=" flex items-center justify-between text-sm mb-1">
               <span className="text-muted-foreground ">
@@ -147,7 +147,7 @@ const PlanSummary = ({
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-sm text-black/60 font-medium">
-                Included Credits  
+                Included Credits
               </span>
               <span className="font-semibold text-sm">0 credits</span>
             </div>
