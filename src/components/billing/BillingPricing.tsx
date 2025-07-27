@@ -165,7 +165,7 @@ const BillingPricing = ({
   };
   return (
     <section
-      className={cn(`flex flex-col  relative py-2 pb-10  w-full `, className)}
+      className={cn(`flex flex-col  relative py-2 pb-30  w-full `, className)}
     >
       {showInterval && (
         <div>
