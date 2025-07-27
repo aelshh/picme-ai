@@ -48,7 +48,7 @@ const BillingPage = async () => {
           user={user!}
           products={products}
           subscription={(subscription as SubscriptionWithProduct) || null}
-          showInterval={false}
+          showInterval={true}
           activeProduct={
             subscription.prices?.products?.name?.toLocaleLowerCase() || "pro"
           }
