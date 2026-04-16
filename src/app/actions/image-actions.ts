@@ -1,12 +1,12 @@
 "use server";
 import { imageGenerationSchema } from "@/components/image-generation/Configuration";
 import { z } from "zod";
-import Replicate from "replicate";
+
 import { createClient } from "@/lib/supabase/server";
 import { Database } from "@/datatypes.types";
 import { imageMeta } from "image-meta";
 import { randomUUID } from "crypto";
-import { getCredits } from "./credit-actions";
+
 
 interface GenerateImageResponse {
   success: boolean;
