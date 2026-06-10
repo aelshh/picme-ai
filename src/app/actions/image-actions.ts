@@ -1,12 +1,12 @@
 "use server";
 import { imageGenerationSchema } from "@/components/image-generation/Configuration";
 import { z } from "zod";
-import Replicate from "replicate";
+
 import { createClient } from "@/lib/supabase/server";
 import { Database } from "@/datatypes.types";
 import { imageMeta } from "image-meta";
 import { randomUUID } from "crypto";
-import { getCredits } from "./credit-actions";
+
 
 interface GenerateImageResponse {
   success: boolean;
@@ -21,65 +21,91 @@ export async function generateImageAction(
 
 
 
-  if(!process.env.REPLICATE_API_TOKEN){
-    return {
-      error: "Misisng REPLICATE_API_TOKEN in environment variables", 
-      success: false,
-      data: null
-    }
+  // if(!process.env.REPLICATE_API_TOKEN){
+  //   return {
+  //     error: "Misisng REPLICATE_API_TOKEN in environment variables", 
+  //     success: false,
+  //     data: null
+  //   }
+  // }
+
+  // const {data: credits} = await getCredits()
+
+  // if(!credits?.image_generation_count || credits.image_generation_count <= 0){
+  //   return {
+  //     error: 'No credits available',
+  //     success: false, 
+  //     data: null
+  //   }
+  // }
+
+
+
+  // const replicate = new Replicate({
+  //   auth: process.env.REPLICATE_API_TOKEN,
+  //   useFileOutput: false,
+  // });
+
+
+
+
+
+  // const modelInput = input.model.startsWith("adarsh-9919")?{
+  //   model: "dev",
+  //   lora_scale: 1,
+  //   prompt: input.prompt,
+  //   extra_lora_scale: 0,
+  //   guidance: input.guidance,
+  //   num_outputs: input.num_outputs,
+  //   aspect_ratio: input.aspect_ratio,
+  //   output_format: input.output_format,
+  //   output_quality: input.output_quality,
+  //   prompt_strength: 0.8,
+  //   num_inference_steps: input.num_inference_steps,
+
+  // }: {
+  //   prompt: input.prompt,
+  //   go_fast: true,
+  //   guidance: input.guidance,
+  //   megapixels: "1",
+  //   num_outputs: input.num_outputs,
+  //   aspect_ratio: input.aspect_ratio,
+  //   output_format: input.output_format,
+  //   output_quality: input.output_quality,
+  //   prompt_strength: 0.8,
+  //   num_inference_steps: input.num_inference_steps,
+  // };
+
+  const modelInput = {
+    prompt: input.prompt, 
+    width: 1024,
+    height: 1024
   }
-
-  const {data: credits} = await getCredits()
-
-  if(!credits?.image_generation_count || credits.image_generation_count <= 0){
-    return {
-      error: 'No credits available',
-      success: false, 
-      data: null
-    }
-  }
-
-
-
-  const replicate = new Replicate({
-    auth: process.env.REPLICATE_API_TOKEN,
-    useFileOutput: false,
-  });
-
-
-
-
-
-  const modelInput = input.model.startsWith("adarsh-9919")?{
-    model: "dev",
-    lora_scale: 1,
-    prompt: input.prompt,
-    extra_lora_scale: 0,
-    guidance: input.guidance,
-    num_outputs: input.num_outputs,
-    aspect_ratio: input.aspect_ratio,
-    output_format: input.output_format,
-    output_quality: input.output_quality,
-    prompt_strength: 0.8,
-    num_inference_steps: input.num_inference_steps,
-
-  }: {
-    prompt: input.prompt,
-    go_fast: true,
-    guidance: input.guidance,
-    megapixels: "1",
-    num_outputs: input.num_outputs,
-    aspect_ratio: input.aspect_ratio,
-    output_format: input.output_format,
-    output_quality: input.output_quality,
-    prompt_strength: 0.8,
-    num_inference_steps: input.num_inference_steps,
-  };
  
   try {
-    const output = await replicate.run(input.model as `${string}/${string}`, {
-      input: modelInput,
-    });
+    // const output = await replicate.run(input.model as `${string}/${string}`, {
+    //   input: modelInput,
+    // });
+
+    const response = await fetch("https://image-generator-api.picme-ai.workers.dev", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-secret": "my-super-secret-key-23892392389"
+      },
+      body: JSON.stringify(modelInput), 
+    })
+
+    if(!response.ok){
+      const errorText = await response.text(); 
+      throw new Error(`Worker Error: ${errorText}`)
+    }
+    const data = await response.json()
+
+    console.log(data);
+    
+
+    const output = data.data
 
     return {
       success: true,
