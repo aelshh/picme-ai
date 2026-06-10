@@ -1,201 +1,161 @@
-import { cn } from "@/lib/utils";
-import React from "react";
-import { AnimatedGradientText } from "../magicui/animated-gradient-text";
-import { ChevronRight } from "lucide-react";
-import { Avatar, AvatarFallback } from "../ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
-import { Button } from "../ui/button";
+"use client";
+
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
-import { Marquee } from "../magicui/marquee";
-import img1 from "@/public/hero-images/Charismatic Young Man with a Warm Smile and Stylish Tousled Hair.jpeg";
-import img2 from "@/public/hero-images/Confident Businesswoman on Turquoise Backdrop.jpeg";
-import img3 from "@/public/hero-images/Confident Woman in Red Outfit.jpeg";
-import img4 from "@/public/hero-images/Confident Woman in Urban Setting.jpeg";
-import img5 from "@/public/hero-images/Futuristic Helmet Portrait.jpeg";
-import img6 from "@/public/hero-images/Futuristic Woman in Armor.jpeg";
-import img7 from "@/public/hero-images/Man in Brown Suit.jpeg";
-import img8 from "@/public/hero-images/Poised Elegance of a Young Professional.jpeg";
-import img9 from "@/public/hero-images/Professional Business Portrait.jpeg";
-import img10 from "@/public/hero-images/Professional Woman in Navy Blue Suit.jpeg";
-import img11 from "@/public/hero-images/Sophisticated Businessman Portrait.jpeg";
+import { ArrowRight, ChevronRight, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
+import dashboardImg from "@/public/dashboard-img.png";
 
-const avatars = [
-  {
-    src: "/avatars/AutumnTechFocus.jpeg",
-    fallback: "CN",
-  },
-  {
-    src: "/avatars/Casual Creative Professional.jpeg",
-    fallback: "AB",
-  },
-  {
-    src: "/avatars/Golden Hour Contemplation.jpeg",
-    fallback: "FG",
-  },
-  {
-    src: "/avatars/Portrait of a Woman in Rust-Colored Top.jpeg",
-    fallback: "PW",
-  },
-  {
-    src: "/avatars/Radiant Comfort.jpeg",
-    fallback: "RC",
-  },
-  {
-    src: "/avatars/Relaxed Bearded Man with Tattoo at Cozy Cafe.jpeg",
-    fallback: "RB",
-  },
-];
-const Images = [
-  {
-    src: img1,
-    alt: "AI generated image",
-  },
-  {
-    src: img2,
-    alt: "AI generated image",
-  },
-  {
-    src: img3,
-    alt: "AI generated image",
-  },
-  {
-    src: img4,
-    alt: "AI generated image",
-  },
-  {
-    src: img5,
-    alt: "AI generated image",
-  },
-  {
-    src: img6,
-    alt: "AI generated image",
-  },
-  {
-    src: img7,
-    alt: "AI generated image",
-  },
-  {
-    src: img8,
-    alt: "AI generated image",
-  },
-  {
-    src: img9,
-    alt: "AI generated image",
-  },
-  {
-    src: img10,
-    alt: "AI generated image",
-  },
-  {
-    src: img11,
-    alt: "AI generated image",
-  },
-];
-
-const MarqueeColumn = ({
-  reverse,
-  className,
+function MagneticButton({
+  children,
+  href,
+  variant = "primary",
 }: {
-  reverse: boolean;
+  children: React.ReactNode;
+  href: string;
+  variant?: "primary" | "secondary";
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  className?: string;
-}) => {
+  const springX = useSpring(x, { stiffness: 200, damping: 15 });
+  const springY = useSpring(y, { stiffness: 200, damping: 15 });
+
+  function handleMouseMove(e: React.MouseEvent) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    x.set(e.clientX - cx);
+    y.set(e.clientY - cy);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  const isPrimary = variant === "primary";
+
   return (
-    <Marquee
-      reverse={reverse}
-      pauseOnHover
-      vertical
-      className={cn(
-        `w-full relative h-full flex flex-col justify-center items-center [--duration:120s] `,
-        className
-      )}
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: springX, y: springY }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 300, damping: 15 }}
     >
-      {Images.sort(() => Math.random() - 0.5).map((image, index) => {
-        return (
-          <Image
-            key={index}
-            src={image.src}
-            alt={image.alt}
-            priority
-            className="w-full h-full object-cover rounded opacity-[.25] hover:opacity-100 transition-opacity duraiton-300 ease-in-out"
-          />
-        );
-      })}
-    </Marquee>
+      <Link
+        href={href}
+        className={cn(
+          "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all",
+          isPrimary
+            ? "bg-accent-indigo text-white hover:brightness-110 shadow-lg shadow-accent-indigo/20"
+            : "border border-border text-foreground hover:bg-muted"
+        )}
+      >
+        {children}
+      </Link>
+    </motion.div>
   );
-};
+}
 
-const HeroSection = () => {
+export default function HeroSection() {
   return (
-    <section className="w-full relative overflow-hidden min-h-screen flex flex-col items-center justify-center ">
-      <div className="relative w-fit px-6 xs:px-8 sm:px-0  mx-auto bg-white/10 backdrop-blur-xs rounded-3xl p-3  flex flex-col items-center  justify-center  z-40 backdrop-blur-[2px ] ">
-        <div className="group relative mx-auto flex bg-white/60 items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f] ">
-          <span
-            className={cn(
-              "absolute inset-0 block h-full w-full animate-gradient  rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]"
-            )}
-            style={{
-              WebkitMask:
-                "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              WebkitMaskComposite: "destination-out",
-              mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              maskComposite: "subtract",
-              WebkitClipPath: "padding-box",
-            }}
-          />
-          🎉 <hr className="mx-2 h-4 w-px shrink-0 bg-neutral-500" />
-          <AnimatedGradientText className="text-sm font-medium">
-            Try new flux model
-          </AnimatedGradientText>
-          <ChevronRight
-            className="ml-1 size-4 stroke-neutral-500 transition-transform
-          duration-300 ease-in-out group-hover:translate-x-0.5"
-          />
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24 pb-16">
+      <div className="absolute inset-0 bg-radial-glow pointer-events-none" />
+      <div className="absolute inset-0 bg-radial-glow-rose pointer-events-none" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="relative mb-8"
+      >
+        <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 bg-white border border-border shadow-sm">
+          <Sparkles className="w-3.5 h-3.5 text-accent-indigo mr-2" />
+          <span className="text-xs font-medium text-muted-foreground">
+            New — Flux Pro Model
+          </span>
+          <ChevronRight className="ml-1 w-3.5 h-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
         </div>
-        <h1 className=" text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-center tracking-tighter mb-6">
-          Transform your photos with the power of AI
-        </h1>
-        <p className="mx-auto max-w-3xl text-sm @min-xs:text-base sm:text-lg  md:text-xl mb-8 text-center text-gray-600 ">
-          From LinkedIn headshots to Instagram influencer photos, Pictoria
-          AI&apos;s state-of-the-art technology ensures you always look your
-          best. Create, edit, and generate images effortlessly.
-        </p>
-        <div className="flex items-center space-x-2 mb-4">
-          <div className="flex items-center -space-x-5  sm:-space-x-4 overflow-hidden">
-            {avatars.map((avatar, index) => {
-              return (
-                <Avatar
-                  key={index}
-                  className="inline-block border-2 border-background"
-                >
-                  <AvatarImage
-                    src={avatar.src}
-                    className="h-full object-cover"
-                  />
-                  <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                </Avatar>
-              );
-            })}
+      </motion.div>
+
+      <motion.h1
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="max-w-4xl px-4 text-center"
+      >
+        <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-none">
+          <span className="text-gradient-brand">
+            Your AI Portrait
+          </span>
+          <br />
+          <span className="text-foreground">Studio</span>
+        </span>
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.35 }}
+        className="mt-6 max-w-2xl px-4 text-center text-base sm:text-lg text-muted-foreground"
+      >
+        Train a custom AI model with your photos and generate studio-quality
+        portraits in hundreds of styles — from LinkedIn headshots to creative
+        editorials.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="mt-8 flex flex-col sm:flex-row items-center gap-4"
+      >
+        <MagneticButton href="/login?state=signup">
+          Generate Your First Model
+          <ArrowRight className="w-4 h-4" />
+        </MagneticButton>
+        <MagneticButton href="#demo" variant="secondary">
+          See How It Works
+        </MagneticButton>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.7 }}
+        className="mt-16 w-full max-w-5xl px-4"
+      >
+        <div className="relative rounded-2xl border border-border bg-white overflow-hidden shadow-xl shadow-black/[0.02]">
+          <div className="absolute -inset-1 bg-gradient-to-r from-accent-indigo/20 via-accent-rose/20 to-accent-indigo/20 rounded-2xl blur-xl opacity-50" />
+          <div className="relative rounded-2xl overflow-hidden">
+            <Image
+              src={dashboardImg}
+              alt="Picme AI Dashboard Preview"
+              className="w-full h-auto"
+              priority
+            />
           </div>
-          <span className="text-sm font-medium">Loved by 1k+ customers</span>
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between px-4 py-2 rounded-lg bg-white/80 backdrop-blur-sm border border-border">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse-soft" />
+              <span className="text-xs text-muted-foreground font-mono">
+                Model ready — 12 portraits generated
+              </span>
+            </div>
+            <span className="text-xs text-accent-indigo font-mono font-medium">
+              ● Online
+            </span>
+          </div>
         </div>
-        <Link href="/login?state=signup">
-          <Button className="rounded-md text-base h-12">
-            ✨ Create Your First AI Model ✨
-          </Button>
-        </Link>
-      </div>
-      <div className="absolute top-0 w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5   xl:grid-cols-6   z-10 ">
-        <MarqueeColumn reverse={false} />
-        <MarqueeColumn reverse={true} />
-        <MarqueeColumn reverse={false} />
-        <MarqueeColumn reverse={true} className="hidden md:flex" />
-        <MarqueeColumn reverse={false} className="hidden lg:flex" />
-        <MarqueeColumn reverse={true} className="hidden lg:flex" />
-      </div>
+      </motion.div>
     </section>
   );
-};
-
-export default HeroSection;
+}

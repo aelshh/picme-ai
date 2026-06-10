@@ -1,105 +1,121 @@
-import React from "react";
-import { AnimatedGradientText } from "../magicui/animated-gradient-text";
-import { cn } from "@/lib/utils";
+"use client";
+
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
+} from "@/components/ui/accordion";
+import {
+  viewportConfig,
+  defaultTransition,
+} from "@/lib/animations";
 
 const faqsList = [
   {
-    question: "How does Pictoria AI work?",
+    question: "How does Picme AI work?",
     answer:
-      "Pictoria AI uses advanced machine learning algorithms to analyze and understand your photos. It then generates new images based on your features and the scenarios you choose, creating realistic and personalized results.",
+      "Upload 10–20 diverse photos of yourself. Our AI analyzes your features and trains a custom model. Then you can generate unlimited portraits in any style — from professional headshots to creative editorials.",
   },
   {
-    question: "Is my data safe with Pictoria AI?",
+    question: "Is my data safe with Picme AI?",
     answer:
-      "Yes, we take data privacy very seriously. All uploaded photos and generated images are encrypted and stored securely. We never share your personal data or images with third parties without your explicit consent.",
+      "Absolutely. All uploaded photos and generated images are encrypted at rest and in transit. We never share your data or images with third parties without your explicit consent. You can delete your data at any time.",
   },
   {
-    question: "How many photos do I need to upload for best results?",
+    question: "How many photos do I need for best results?",
     answer:
-      "For optimal results, we recommend uploading at least 10-20 diverse photos of yourself. This helps our AI model better understand your features and expressions, leading to more accurate and realistic generated images.",
+      "We recommend uploading at least 10–20 photos with varied angles, expressions, and lighting. This helps our AI model learn your features comprehensively, resulting in more accurate and realistic generations.",
   },
   {
-    question: "Can I use Pictoria AI for commercial purposes?",
+    question: "Can I use Picme AI for commercial purposes?",
     answer:
-      "Yes, our Pro and Enterprise plans include commercial usage rights for the images you generate. However, please note that you should always respect copyright and privacy laws when using AI-generated images.",
+      "Yes. Our Pro and Enterprise plans include full commercial usage rights for all generated images. You can use them for social media, marketing, branding, and any other commercial application.",
   },
   {
-    question: "How often do you update the AI model?",
+    question: "How often is the AI model updated?",
     answer:
-      "We continuously work on improving our AI model. Major updates are typically released quarterly, with minor improvements and optimizations happening more frequently. All users benefit from these updates automatically.",
+      "We continuously improve our models. Major updates roll out quarterly, with incremental improvements happening bi-weekly. All users automatically benefit from the latest advancements.",
   },
   {
-    question: "What are the differences between the free and paid plans?",
+    question: "What file formats and resolutions do you support?",
     answer:
-      "The free plan allows you to generate up to 5 images per day. The Pro plan includes unlimited image generation, higher resolution output, and access to additional features. The Enterprise plan is tailored for businesses and offers custom integrations and dedicated support.",
+      "We support JPEG and PNG uploads. Generated images are delivered in high-resolution PNG format at up to 2048x2048 pixels on the Pro plan, suitable for print and digital use.",
   },
 ];
 
-const Question = ({
+function Question({
   question,
   answer,
 }: {
   question: string;
   answer: string;
-}) => {
+}) {
   return (
-    <AccordionItem value={question}>
-      <AccordionTrigger className="text-left">{question}</AccordionTrigger>
-      <AccordionContent className="text-muted-foreground">
+    <AccordionItem
+      value={question}
+      className="border-b border-border last:border-0"
+    >
+      <AccordionTrigger className="text-left text-sm font-medium py-5 hover:no-underline group">
+        <span className="group-hover:text-accent-indigo transition-colors">
+          {question}
+        </span>
+      </AccordionTrigger>
+      <AccordionContent className="text-sm text-muted-foreground pb-5 leading-relaxed">
         {answer}
       </AccordionContent>
     </AccordionItem>
   );
-};
+}
 
-const Faqs = () => {
+export default function Faqs() {
   return (
     <section
       id="faqs"
-      className="w-full  py-32 px-6 xs:px-8 sm:px-0 sm:mx-8 lg:mx-auto flex flex-col items-center justify-center overflow-hidden"
+      className="w-full py-32 px-4 sm:px-6 lg:px-8 scroll-mt-nav"
     >
-      <div className="group relative mx-auto flex w-fit  items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f] bg-background backdrop-blur-0 ">
-        <span
-          className={cn(
-            "absolute inset-0 block h-full w-full animate-gradient  rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]"
-          )}
-          style={{
-            WebkitMask:
-              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "destination-out",
-            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            maskComposite: "subtract",
-            WebkitClipPath: "padding-box",
-          }}
-        />
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={defaultTransition}
+          className="mb-12 text-center"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-white border border-border shadow-sm mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-accent-indigo" />
+            <span className="text-xs font-medium text-muted-foreground">
+              FAQ
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            Got questions?{" "}
+            <span className="text-gradient-brand">We&apos;ve got answers</span>
+          </h2>
+          <p className="mt-4 text-base text-muted-foreground">
+            Everything you need to know about Picme AI.
+          </p>
+        </motion.div>
 
-        <AnimatedGradientText className="text-sm font-medium">
-          FAQs
-        </AnimatedGradientText>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={{ ...defaultTransition, delay: 0.1 }}
+        >
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full rounded-2xl border border-border bg-white px-6 shadow-sm"
+          >
+            {faqsList.map((faq) => (
+              <Question key={faq.question} {...faq} />
+            ))}
+          </Accordion>
+        </motion.div>
       </div>
-      <h2 className="text-2xl xs:text-3xl text-center sm:text-4xl font-bold mt-4">
-        Frequently Asked Questions
-      </h2>
-      <p className="text-base text-muted-foreground lg:max-w-[75%] mt-4 text-center">
-        Here are some of the most frequently asked questions about our product.
-      </p>
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full max-w-4xl mx-auto mt-16"
-      >
-        {faqsList.map((faq) => {
-          return <Question key={faq.question} {...faq} />;
-        })}
-      </Accordion>
     </section>
   );
-};
-
-export default Faqs;
+}

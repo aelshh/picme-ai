@@ -1,20 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Label } from "../ui/label";
-import { Switch } from "../ui/switch";
-
-import { AnimatedGradientText } from "../magicui/animated-gradient-text";
-
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, Check } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Tables } from "@/datatypes.types";
-import { Button } from "../ui/button";
-import { Check } from "lucide-react";
-import Link from "next/link";
-import { Badge } from "../ui/badge";
+import {
+  viewportConfig,
+  defaultTransition,
+} from "@/lib/animations";
 
 type Product = Tables<"products">;
-
 type Prices = Tables<"prices">;
 
 interface ProductWithPrices extends Product {
@@ -26,129 +23,176 @@ interface PricingSectionProps {
   popular?: string;
 }
 
-const PricingSection = ({ products, popular = "pro" }: PricingSectionProps) => {
-  const [billingInterval, setBillingIntercval] = useState("month");
+export default function PricingSection({
+  products,
+  popular = "pro",
+}: PricingSectionProps) {
+  const [billingInterval, setBillingInterval] = useState("month");
+
+  const isYearly = billingInterval === "year";
+
   return (
-    <section className="flex flex-col items-center justify-center relative bg-accent py-10 sm:py-16 lg:py-20 w-full">
-      <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]">
-        <span
-          className={cn(
-            "absolute inset-0 block h-full w-full animate-gradient rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]"
-          )}
-          style={{
-            WebkitMask:
-              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "destination-out",
-            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            maskComposite: "subtract",
-            WebkitClipPath: "padding-box",
-          }}
-        />
-        <AnimatedGradientText className="text-sm font-medium">
-          Pricing
-        </AnimatedGradientText>
-      </div>
-      <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold mt-3 text-center">
-        Choose The Plan That Fits Your Needs
-      </h2>
-      <p className="text-base text-muted-foreground lg:max-w-[75%] text-center ">
-        Choose an affordable plan that is packed with the best features for
-        engaging your audience, creating customer loyalty and driving sales.
-      </p>
-      <div className="flex gap-2 xs:gap-3 items-center justify-center pt-6 xs:pt-10">
-        <Label
-          htmlFor="billingInterval"
-          className="text-xs xs:text-sm sm:text-base"
-        >
-          Monthly
-        </Label>
-        <Switch
-          id="billingInterval"
-          checked={billingInterval === "year"}
-          onCheckedChange={(checked) => {
-            setBillingIntercval(checked ? "year" : "month");
-          }}
-        />
-        <Label
-          htmlFor="billingInterval"
-          className="text-xs xs:text-sm sm:text-base"
-        >
-          Yearly
-        </Label>
-      </div>
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full  px-8 xs:px-8 sm:px-12 lg:px-20 mt-10">
-        {products.map((product) => {
-          const price = product.prices.find(
-            (price) => price.interval === billingInterval
-          );
-          if (!price) {
-            return null;
-          }
+    <section
+      id="pricing"
+      className="w-full py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden scroll-mt-nav"
+    >
+      <div className="absolute inset-0 bg-radial-glow pointer-events-none" />
 
-          const priceString = Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: price.currency || "",
-            minimumFractionDigits: 0,
-          }).format((price.unit_amount || 0) / 100);
+      <div className="max-w-6xl mx-auto relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={defaultTransition}
+          className="mb-12 text-center"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-white border border-border shadow-sm mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-accent-indigo" />
+            <span className="text-xs font-medium text-muted-foreground">
+              Pricing
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            Choose your{" "}
+            <span className="text-gradient-brand">perfect plan</span>
+          </h2>
+          <p className="mt-4 max-w-xl mx-auto text-base text-muted-foreground">
+            No hidden fees. Upgrade or cancel anytime.
+          </p>
 
-          return (
-            <div
-              key={price.id}
+          <div className="mt-8 inline-flex items-center gap-1 rounded-full bg-muted border border-border p-1">
+            <button
+              onClick={() => setBillingInterval("month")}
               className={cn(
-                `w-full max-w-xs xs:max-w-sm sm:max-w-md lg:max-w-[400px] bg-white px-4 pb-8 divide-y divide-border border-border rounded-lg py-5 border shadow-sm`,
-                product.name?.toLocaleLowerCase() ===
-                  popular.toLocaleLowerCase()
-                  ? "border-primary scale-105 bg-background drop-shadow-md"
-                  : "border-border"
+                "px-4 py-2 text-sm font-medium rounded-full transition-all",
+                !isYearly
+                  ? "bg-white text-foreground shadow-sm border border-border"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <div>
-                <h2 className="text-lg xs:text-xl font-semibold flex items-center justify-between">
-                  {product.name}{" "}
-                  {product.name?.toLocaleLowerCase() ===
-                    popular.toLocaleLowerCase() && (
-                    <Badge className="rounded-full h-fit">Most Popular</Badge>
+              Monthly
+            </button>
+            <button
+              onClick={() => setBillingInterval("year")}
+              className={cn(
+                "px-4 py-2 text-sm font-medium rounded-full transition-all",
+                isYearly
+                  ? "bg-white text-foreground shadow-sm border border-border"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              Yearly
+              <span className="ml-1.5 text-[10px] text-accent-indigo font-semibold opacity-80">
+                Save 20%
+              </span>
+            </button>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <AnimatePresence mode="popLayout">
+            {products.map((product) => {
+              const price = product.prices.find(
+                (p) => p.interval === billingInterval
+              );
+
+              const isPopular =
+                product.name?.toLowerCase() === popular.toLowerCase();
+
+              const priceString = price
+                ? Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: price.currency || "USD",
+                    minimumFractionDigits: 0,
+                  }).format((price.unit_amount || 0) / 100)
+                : null;
+
+              const features = Object.values(
+                product.metadata ?? {}
+              ) as string[];
+
+              return (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className={cn(
+                    "relative flex flex-col rounded-2xl bg-white p-6 transition-all duration-300",
+                    isPopular
+                      ? "gradient-border scale-[1.02] shadow-xl shadow-accent-indigo/10"
+                      : "border border-border hover:border-border/80 hover:shadow-lg"
                   )}
-                </h2>
-                <p className="text-muted-foreground text-xs xs:text-sm mt-3">
-                  {product.description}
-                </p>
-                <h1 className="mb-8 mt-6">
-                  <span className="text-2xl xs:text-3xl font-bold">
-                    {priceString}
-                  </span>
-                  <span className="text-muted-foreground">
-                    /{billingInterval}
-                  </span>
-                </h1>
-                <Link href="/login?state=signup">
-                  <Button
-                    className={cn(`w-full mb-5`)}
-                    variant={product.name === "Pro" ? "default" : "secondary"}
-                  >
-                    Subscribe
-                  </Button>
-                </Link>
-              </div>
-              <div className="mt-5 space-y-3">
-                <h3 className="text-xs font-medium mb-5">
-                  WHAT&apos;S INCLUDED
-                </h3>
-                {Object.values(product.metadata as object).map(
-                  (value, index) => (
-                    <div key={index} className="flex gap-2 items-center">
-                      <Check className="w-4 h-4" />
-                      <li className="list-none">{value}</li>
+                >
+                  {isPopular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="inline-flex items-center rounded-full bg-accent-indigo px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
+                        Most Popular
+                      </span>
                     </div>
-                  )
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  )}
+
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {product.name}
+                    </h3>
+                    {product.description && (
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {product.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-8 min-h-[3rem]">
+                    {priceString ? (
+                      <>
+                        <span className="text-4xl font-bold text-foreground">
+                          {priceString}
+                        </span>
+                        <span className="ml-1 text-sm text-muted-foreground">
+                          /{billingInterval}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">
+                        Contact us
+                      </span>
+                    )}
+                  </div>
+
+                  <Link
+                    href="/login?state=signup"
+                    className={cn(
+                      "inline-flex items-center justify-center rounded-xl px-4 py-3 text-sm font-medium transition-all active:scale-95 mb-8",
+                      isPopular
+                        ? "bg-accent-indigo text-white hover:brightness-110"
+                        : "bg-muted text-foreground border border-border hover:bg-white"
+                    )}
+                  >
+                    Get Started
+                  </Link>
+
+                  <div className="space-y-3 mt-auto">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      What&apos;s included
+                    </p>
+                    {features.map((feature, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <Check className="w-4 h-4 text-accent-indigo shrink-0 mt-0.5" />
+                        <span className="text-sm text-muted-foreground">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );
-};
-
-export default PricingSection;
+}

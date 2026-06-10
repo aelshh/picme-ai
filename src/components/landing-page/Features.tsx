@@ -1,104 +1,156 @@
-import React from "react";
-import { AnimatedGradientText } from "../magicui/animated-gradient-text";
-import { cn } from "@/lib/utils";
-import { ImageIcon, Package2, Palette } from "lucide-react";
-import dashboardImg from "@/public/dashboard-img.png";
-import Image from "next/image";
+"use client";
 
-const featureList = [
+import { motion } from "framer-motion";
+import {
+  Sparkles,
+  Package,
+  Palette,
+  Zap,
+  ShieldCheck,
+  ImageIcon,
+} from "lucide-react";
+import {
+  staggerContainer,
+  staggerItem,
+  viewportConfig,
+  defaultTransition,
+} from "@/lib/animations";
+import { cn } from "@/lib/utils";
+
+interface BentoCardProps {
+  className?: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  accent?: "indigo" | "rose" | "none";
+}
+
+const glowMap = {
+  indigo:
+    "group-hover:border-accent-indigo/30 group-hover:shadow-accent-indigo/10",
+  rose:
+    "group-hover:border-accent-rose/30 group-hover:shadow-accent-rose/10",
+  none: "group-hover:border-border/80",
+};
+
+function BentoCard({ className, icon, title, description, accent = "none" }: BentoCardProps) {
+  return (
+    <motion.div
+      variants={staggerItem}
+      viewport={viewportConfig}
+      transition={defaultTransition}
+      className={cn(
+        "group relative rounded-2xl border border-border bg-white p-6 transition-all duration-300 hover:shadow-lg",
+        glowMap[accent],
+        className
+      )}
+    >
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-muted border border-border text-accent-indigo group-hover:bg-accent-indigo/10 transition-colors">
+        {icon}
+      </div>
+      <h3 className="text-base font-semibold text-foreground mb-2">
+        {title}
+      </h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        {description}
+      </p>
+    </motion.div>
+  );
+}
+
+const features = [
   {
-    title: "AI-Powered Photos",
+    title: "AI Model Training",
     description:
-      "Instantly tranform your photos into high-quality, lifelike images with the power of AI. Whether you need fresh content for social media, professional shots for LinkedIn, or a fun set of images for personal project.",
-    icon: <ImageIcon className="w-6 h-6" strokeWidth={1.5} />,
+      "Upload 10–20 photos and our AI learns your unique features. The more you upload, the more accurate and realistic your generated portraits become.",
+    icon: <Sparkles className="w-5 h-5" />,
+    accent: "indigo" as const,
+    className: "md:col-span-2 md:row-span-1",
   },
   {
-    title: "Diverse Photo Packs at Your Fingertips",
+    title: "60+ Photo Packs",
     description:
-      "Say goodbye to spending hours setting up shots. With over 60 preset photo packs, from classic corporate headshots to trendy street-style looks, you can capture any vibe or mood with a single click.",
-    icon: <Package2 className="w-6 h-6" strokeWidth={1.5} />,
+      "From corporate headshots to street-style fashion, choose from dozens of professionally curated packs for every use case.",
+    icon: <Package className="w-5 h-5" />,
+    accent: "rose" as const,
+    className: "md:col-span-1 md:row-span-1",
   },
   {
-    title: "Customizable Photo Generation",
+    title: "Custom Styles",
     description:
-      "Tailor each image to reflect your personal or brand style. By creating your own Al model, you can effortlessly fine-tune poses, expressions, and even background settings for a perfect visual representation that fits your unique aesthetic.",
-    icon: <Palette className="w-6 h-6 " strokeWidth={1.5} />,
+      "Fine-tune poses, expressions, backgrounds, and lighting to match your personal or brand aesthetic perfectly.",
+    icon: <Palette className="w-5 h-5" />,
+    accent: "none" as const,
+    className: "md:col-span-1 md:row-span-1",
+  },
+  {
+    title: "Studio-Grade Quality",
+    description:
+      "Each image is rendered at high resolution with professional lighting and composition — indistinguishable from a real photoshoot.",
+    icon: <ImageIcon className="w-5 h-5" />,
+    accent: "indigo" as const,
+    className: "md:col-span-1 md:row-span-1",
+  },
+  {
+    title: "Instant Generation",
+    description:
+      "Get your results in minutes, not hours. Our optimized pipeline delivers your complete photo pack faster than ever.",
+    icon: <Zap className="w-5 h-5" />,
+    accent: "none" as const,
+    className: "md:col-span-1 md:row-span-1",
+  },
+  {
+    title: "Commercial License",
+    description:
+      "Use your generated images anywhere — LinkedIn, Instagram, dating profiles, or even commercial brand campaigns. Full rights included.",
+    icon: <ShieldCheck className="w-5 h-5" />,
+    accent: "rose" as const,
+    className: "md:col-span-2 md:row-span-1",
   },
 ];
 
-const Features = () => {
+export default function Features() {
   return (
     <section
       id="features"
-      className="w-full bg-muted py-32 flex flex-col items-center justify-center"
+      className="w-full py-32 px-4 sm:px-6 lg:px-8 scroll-mt-nav"
     >
-      <div className="container  px-6 xs:px-8 sm:px-0 sm:mx-8 lg:mx-auto grid-cols-1  grid lg:grid-cols-2  gap-8 relative bg-muted">
-        <div className="col-span-full space-y-4 ">
-          <div className="group relative mx-auto flex w-fit  items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f] ml-0 bg-background backdrop-blur-0 ">
-            <span
-              className={cn(
-                "absolute inset-0 block h-full w-full animate-gradient  rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]"
-              )}
-              style={{
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "destination-out",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "subtract",
-                WebkitClipPath: "padding-box",
-              }}
-            />
-
-            <AnimatedGradientText className="text-sm font-medium">
-              Features
-            </AnimatedGradientText>
-          </div>
-          <h2 className="text-2xl xs:text-3xl  sm:text-4xl font-bold">
-            Unlock Unlimited Possibilities with Pictoria AI
-          </h2>
-          <p className="text-base text-muted-foreground lg:max-w-[75%]">
-            Our platform offers a wide range of features designed to enhance
-            your image creation experience. From easy-to-use editing tools to
-            powerful AI-powered image generation, we have everything you need to
-            bring your ideas to life.
-          </p>
-        </div>
-        <div className="flex flex-col justify-start items-start order-2 lg:order-1">
-          {featureList.map((feature) => {
-            return (
-              <div
-                key={feature.title}
-                className="flex items-start  gap-2 sm:gap-4 rounded-lg py-8  lg:p-12 "
-              >
-                <span className=" p-0 sm:p-2 rounded-md text-foreground   sm:text-background  bg-muted sm:bg-foreground">
-                  {feature.icon}
-                </span>
-                <div>
-                  <h3 className=" text-xl sm:text-2xl font-medium">
-                    {feature.title}
-                  </h3>
-                  <p className=" text-sm sm:text-base text-muted-foreground pt-2 ">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div
-          className={cn(
-            `h-fit lg:sticky top-32 pl-16 pt-16 rounded-lg border border-r-gray-300  border-b-gray-300 animate-gradient bg-gradient-to-r from-[#627fab] via-[#b95480] to-[#627fab] bg-[length:var(--bg-size)_100%] [--bg-size:400] order-1 lg:order-2`
-          )}
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={defaultTransition}
+          className="mb-16 text-center"
         >
-          <Image
-            src={dashboardImg}
-            alt="Features Image"
-            className="w-full h-auto rounded-tl-lg"
-          />
-        </div>
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-white border border-border shadow-sm mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-accent-indigo" />
+            <span className="text-xs font-medium text-muted-foreground">
+              Features
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            Everything you need for{" "}
+            <span className="text-gradient-brand">perfect portraits</span>
+          </h2>
+          <p className="mt-4 max-w-2xl mx-auto text-base text-muted-foreground">
+            No expensive studios, no photographers, no scheduling. Just upload
+            and let AI do the work.
+          </p>
+        </motion.div>
+
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={viewportConfig}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          {features.map((feature) => (
+            <BentoCard key={feature.title} {...feature} />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default Features;
+}
